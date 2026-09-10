@@ -1,0 +1,511 @@
+HTML
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expedição Grão-Pará | Território de História, Cultura e Natureza</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0d1a12;
+            --card-bg: #15261b;
+            --card-hover: #1e3828;
+            --accent-gold: #e6a100;
+            --accent-green: #2ecc71;
+            --text-light: #f0f4f1;
+            --text-muted: #a3b899;
+            --history-color: #d35400;
+            --culture-color: #9b59b6;
+            --env-color: #27ae60;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(rgba(13, 26, 18, 0.85), rgba(13, 26, 18, 0.95)),
+                        url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=1200') center/cover;
+            text-align: center;
+            padding: 60px 20px 40px;
+            border-bottom: 3px solid var(--accent-gold);
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 25px;
+        }
+
+        .stats-bar {
+            display: inline-flex;
+            gap: 20px;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 25px;
+            border-radius: 30px;
+            border: 1px solid rgba(230, 161, 0, 0.3);
+        }
+
+        .stat-item {
+            font-weight: 600;
+        }
+
+        .stat-value {
+            color: var(--accent-gold);
+        }
+
+        container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: block;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn-filter {
+            background: var(--card-bg);
+            color: var(--text-light);
+            border: 1px solid var(--text-muted);
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-filter.active, .btn-filter:hover {
+            background: var(--accent-gold);
+            color: #000;
+            border-color: var(--accent-gold);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.3s ease, background 0.3s ease;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: var(--card-hover);
+        }
+
+        .card-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            width: fit-content;
+            margin-bottom: 15px;
+        }
+
+        .tag-historia { background: rgba(211, 84, 0, 0.2); color: var(--history-color); border: 1px solid var(--history-color); }
+        .tag-cultura { background: rgba(155, 89, 182, 0.2); color: var(--culture-color); border: 1px solid var(--culture-color); }
+        .tag-ambiente { background: rgba(39, 174, 96, 0.2); color: var(--env-color); border: 1px solid var(--env-color); }
+
+        .card h3 {
+            font-family: 'Cinzel', serif;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .card-status {
+            font-size: 0.85rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 50px;
+            border: 1px solid var(--accent-gold);
+        }
+
+        .quiz-section h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .quiz-option {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .quiz-option:hover {
+            background: rgba(230, 161, 0, 0.2);
+            border-color: var(--accent-gold);
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 50px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-content: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid var(--accent-gold);
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .subtitle { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Expedição ao Grão-Pará</h1>
+        <p class="subtitle">Você acaba de desembarcar neste vasto e fascinante território. Serás capaz de identificar e catalogar seus elementos históricos, culturais e ambientais?</p>
+        
+        <div class="stats-bar">
+            <div class="stat-item">Elementos Descobertos: <span id="discovered-count" class="stat-value">0</span> / <span id="total-count">9</span></div>
+            <div class="stat-item">Nível: <span id="rank-title" class="stat-value">Visitante</span></div>
+        </div>
+    </header>
+
+    <container>
+        <div class="filter-buttons">
+            <button class="btn-filter active" onclick="filterCards('todos')">Todos os Elementos</button>
+            <button class="btn-filter" onclick="filterCards('historia')">📜 História</button>
+            <button class="btn-filter" onclick="filterCards('cultura')">🎭 Cultura</button>
+            <button class="btn-filter" onclick="filterCards('ambiente')">🌿 Meio Ambiente</button>
+        </div>
+
+        <div class="grid" id="cards-container">
+            <!-- Os cards serão gerados via JS -->
+        </div>
+
+        <div class="quiz-section">
+            <h2>📜 Teste de Conhecimento do Território</h2>
+            <p id="quiz-question" style="text-align: center; margin-bottom: 20px;">Carregando pergunta...</p>
+            <div id="quiz-options"></div>
+            <div id="quiz-feedback" class="quiz-feedback"></div>
+        </div>
+    </container>
+
+    <div class="modal" id="info-modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <span class="card-tag" id="modal-tag"></span>
+            <h2 id="modal-title" style="font-family: 'Cinzel', serif; margin: 10px 0; color: var(--accent-gold);"></h2>
+            <p id="modal-desc" style="color: var(--text-light); margin-bottom: 15px;"></p>
+            <p id="modal-extra" style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;"></p>
+        </div>
+    </div>
+
+    <footer>
+        <p>Projeto Desenvolvido para o GitHub Pages | Território Histórico do Grão-Pará</p>
+    </footer>
+
+    <script>
+        const elementsData = [
+            // História
+            {
+                id: 1,
+                category: 'historia',
+                tag: '📜 História',
+                title: 'A Cabanagem (1835-1840)',
+                shortDesc: 'Uma das revoltas populares mais marcantes do Brasil Imperial.',
+                fullDesc: 'A Cabanagem foi uma revolta social e popular onde indígenas, quilombolas e ribeirinhos tomaram o poder no Grão-Pará. Lutavam contra a miséria, a opressão e o domínio das elites políticas locais.',
+                curiosity: 'Fato Histórico: Foi a única revolta popular no Brasil que chegou a tomar o governo da província.'
+            },
+            {
+                id: 2,
+                category: 'historia',
+                tag: '📜 História',
+                title: 'Forte do Presépio (1616)',
+                shortDesc: 'Marco de fundação da cidade de Belém e início da colonização.',
+                fullDesc: 'Construído pelos portugueses para defender o território contra invasões inglesas e holandesas e garantir o controle sobre a foz do Rio Amazonas.',
+                curiosity: 'Localização: Deu origem ao que hoje é o centro histórico de Belém (Feliz Lusitânia).'
+            },
+            {
+                id: 3,
+                category: 'historia',
+                tag: '📜 História',
+                title: 'O Ciclo da Borracha',
+                shortDesc: 'Período de intensa riqueza econômica e urbanização no século XIX e XX.',
+                fullDesc: 'A extração do látex transformou a região na "Belle Époque Amazônica", financiando grandes obras arquitetônicas como o Theatro da Paz.',
+                curiosity: 'Impacto: Atraiu milhares de migrantes (especialmente nordestinos) para o trabalho nos seringais.'
+            },
+
+            // Cultura
+            {
+                id: 4,
+                category: 'cultura',
+                tag: '🎭 Cultura',
+                title: 'Círio de Nazaré',
+                shortDesc: 'Uma das maiores manifestações religiosas e culturais do mundo.',
+                fullDesc: 'Reúne milhões de fiéis em Belém em procissão para homenagear Nossa Senhora de Nazaré. É reconhecido como Patrimônio Imaterial da Humanidade pela UNESCO.',
+                curiosity: 'Símbolo: A "Corda do Círio" e os brinquedos de miriti são marcas registradas do festejo.'
+            },
+            {
+                id: 5,
+                category: 'cultura',
+                tag: '🎭 Cultura',
+                title: 'Carimbó e Ritmos Paroaras',
+                shortDesc: 'Dança de roda e ritmo vibrante de matriz indígena e africana.',
+                fullDesc: 'Expressão cultural nascida do trabalho de pescadores e agricultores. Com instrumentos como o curimbó, banjo e maracás, celebra a vida na floresta e nos rios.',
+                curiosity: 'Tradição: As dançarinas usam saias longas e floridas com movimentos giratórios característicos.'
+            },
+            {
+                id: 6,
+                category: 'cultura',
+                tag: '🎭 Cultura',
+                title: 'Culinária e Cerâmica Marajoara',
+                shortDesc: 'Sabores do Tucupi, Jambu, Açaí e a ancestral arte da Ilha de Marajó.',
+                fullDesc: 'A gastronomia do Grão-Pará é profundamente indígena, utilizando ingredientes como o tucupi, goma de tapioca e o jambu (que treme a boca). A cerâmica marajoara é um dos artesanatos mais antigos das Américas.',
+                curiosity: 'Patrimônio: O Tacacá servido nas tradicionais bancas das "tacacazeiras".'
+            },
+
+            // Meio Ambiente
+            {
+                id: 7,
+                category: 'ambiente',
+                tag: '🌿 Meio Ambiente',
+                title: 'Florestas de Igapó e Várzea',
+                shortDesc: 'Ecossistemas moldados pelo ritmo das águas dos rios amazônicos.',
+                fullDesc: 'A vegetação do Grão-Pará é dividida entre Mata de Terra Firme, Várzea (periodicamente inundada) e Igapó (permanentemente alagada pelos rios de águas pretas ou barrentas).',
+                curiosity: 'Biodiversidade: Abriga milhares de espécies adaptadas às cheias e vazantes.'
+            },
+            {
+                id: 8,
+                category: 'ambiente',
+                tag: '🌿 Meio Ambiente',
+                title: 'Vitória-Régia (Victoria amazonica)',
+                shortDesc: 'Símbolo emblemático da flora e das lendas da Amazônia.',
+                fullDesc: 'Uma das maiores plantas aquáticas do mundo, com folhas circulares que podem atingir mais de 2 metros de diâmetro e flutuar sobre as águas calmas das igarapés.',
+                curiosity: 'Mitolgia: Associada à lenda indígena da guerreira Naiá transformada em estrela das águas.'
+            },
+            {
+                id: 9,
+                category: 'ambiente',
+                tag: '🌿 Meio Ambiente',
+                title: 'Bacia Hidrográfica & Fauna',
+                shortDesc: 'O santuário do Boto-Cor-De-Rosa, Peixe-Boi e Harpia.',
+                fullDesc: 'O território do Grão-Pará é banhado pelos grandes rios (Amazonas, Tapajós, Tocantins), sustentando a maior biodiversidade do planeta.',
+                curiosity: 'Lenda & Ciência: O boto-cor-de-rosa atua como elemento central no folclore regional.'
+            }
+        ];
+
+        const quizQuestions = [
+            {
+                q: "Qual revolta popular do século XIX ocorreu no território do Grão-Pará e chegou a tomar o poder regional?",
+                options: ["Guerra dos Farrapos", "Cabanagem", "Revolta dos Búzios", "Balaiada"],
+                correct: 1
+            },
+            {
+                q: "Qual planta aquática gigante é um dos maiores símbolos do ecossistema e do folclore da região?",
+                options: ["Mandacaru", "Vitória-Régia", "Samambaia-Açú", "Aguapé"],
+                correct: 1
+            },
+            {
+                q: "Qual ritmo musical e dança tradicional de roda é Patrimônio Cultural Imaterial do Brasil originário do Pará?",
+                options: ["Samba de Roda", "Carimbó", "Frevo", "Maracatu"],
+                correct: 1
+            }
+        ];
+
+        let discovered = new Set();
+        let currentQuizIndex = 0;
+
+        function renderCards(filter = 'todos') {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+
+            const filtered = filter === 'todos' 
+                ? elementsData 
+                : elementsData.filter(item => item.category === filter);
+
+            filtered.forEach(item => {
+                const isDiscovered = discovered.has(item.id);
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => openModal(item);
+
+                card.innerHTML = `
+                    <div>
+                        <span class="card-tag tag-${item.category}">${item.tag}</span>
+                        <h3>${item.title}</h3>
+                        <p>${item.shortDesc}</p>
+                    </div>
+                    <div class="card-status">
+                        ${isDiscovered ? '✅ Catalogado no Diário' : '🔍 Clique para Explorar'}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterCards(cat) {
+            document.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderCards(cat);
+        }
+
+        function openModal(item) {
+            discovered.add(item.id);
+            updateStats();
+            renderCards(document.querySelector('.btn-filter.active').textContent.toLowerCase().includes('história') ? 'historia' : 'todos');
+
+            document.getElementById('modal-tag').textContent = item.tag;
+            document.getElementById('modal-tag').className = `card-tag tag-${item.category}`;
+            document.getElementById('modal-title').textContent = item.title;
+            document.getElementById('modal-desc').textContent = item.fullDesc;
+            document.getElementById('modal-extra').textContent = item.curiosity;
+            document.getElementById('info-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('info-modal').style.display = 'none';
+        }
+
+        function updateStats() {
+            const count = discovered.size;
+            document.getElementById('discovered-count').textContent = count;
+
+            let rank = "Visitante";
+            if (count >= 3) rank = "Explorador Aprendiz";
+            if (count >= 6) rank = "Conhecedor do Grão-Pará";
+            if (count === 9) rank = "Mestre Guardião do Território 🏆";
+
+            document.getElementById('rank-title').textContent = rank;
+        }
+
+        function loadQuiz() {
+            const q = quizQuestions[currentQuizIndex];
+            document.getElementById('quiz-question').textContent = q.q;
+            const optionsDiv = document.getElementById('quiz-options');
+            optionsDiv.innerHTML = '';
+            document.getElementById('quiz-feedback').textContent = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('div');
+                btn.className = 'quiz-option';
+                btn.textContent = opt;
+                btn.onclick = () => checkAnswer(idx);
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected) {
+            const q = quizQuestions[currentQuizIndex];
+            const feedback = document.getElementById('quiz-feedback');
+
+            if (selected === q.correct) {
+                feedback.textContent = "✨ Correto! Você demonstra sabedoria sobre o Grão-Pará.";
+                feedback.style.color = "var(--accent-green)";
+                setTimeout(() => {
+                    currentQuizIndex = (currentQuizIndex + 1) % quizQuestions.length;
+                    loadQuiz();
+                }, 2000);
+            } else {
+                feedback.textContent = "❌ Tente novamente! Observe os detalhes do território.";
+                feedback.style.color = "#e74c3c";
+            }
+        }
+
+        // Inicialização
+        renderCards();
+        loadQuiz();
+    </script>
+</body>
+</html>

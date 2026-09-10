@@ -1,4 +1,3 @@
-HTML
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -63,6 +62,8 @@ HTML
             padding: 10px 25px;
             border-radius: 30px;
             border: 1px solid rgba(230, 161, 0, 0.3);
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .stat-item {
@@ -169,37 +170,123 @@ HTML
         .quiz-section {
             background: var(--card-bg);
             border-radius: 15px;
-            padding: 30px;
+            padding: 35px 30px;
             margin-top: 50px;
             border: 1px solid var(--accent-gold);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .quiz-section h2 {
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .quiz-header h2 {
             font-family: 'Cinzel', serif;
             color: var(--accent-gold);
-            margin-bottom: 15px;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .quiz-progress {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .quiz-question-box {
+            font-size: 1.15rem;
+            font-weight: 600;
             text-align: center;
+            margin-bottom: 25px;
+            color: #fff;
+            min-height: 50px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 700px;
+            margin: 0 auto;
         }
 
         .quiz-option {
             background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 15px 20px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s ease;
+            font-size: 0.98rem;
         }
 
         .quiz-option:hover {
             background: rgba(230, 161, 0, 0.2);
             border-color: var(--accent-gold);
+            transform: translateX(5px);
+        }
+
+        .quiz-option.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .quiz-option.correct {
+            background: rgba(46, 204, 113, 0.3) !important;
+            border-color: var(--accent-green) !important;
+            color: #fff;
+        }
+
+        .quiz-option.wrong {
+            background: rgba(231, 76, 60, 0.3) !important;
+            border-color: #e74c3c !important;
+            color: #fff;
         }
 
         .quiz-feedback {
-            margin-top: 15px;
+            margin-top: 20px;
             font-weight: 600;
             text-align: center;
+            font-size: 1.05rem;
+            min-height: 30px;
+        }
+
+        .quiz-result {
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        .quiz-result h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--accent-gold);
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .quiz-result p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+
+        .btn-action {
+            background: var(--accent-gold);
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-action:hover {
+            background: #ffbe1a;
+            transform: scale(1.05);
         }
 
         footer {
@@ -216,18 +303,18 @@ HTML
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             justify-content: center;
             align-items: center;
-            z-content: 1000;
+            z-index: 1000;
             padding: 20px;
         }
 
         .modal-content {
             background: var(--card-bg);
-            padding: 30px;
+            padding: 35px 30px;
             border-radius: 12px;
-            max-width: 500px;
+            max-width: 550px;
             width: 100%;
             border: 1px solid var(--accent-gold);
             position: relative;
@@ -240,7 +327,7 @@ HTML
             background: none;
             border: none;
             color: #fff;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             cursor: pointer;
         }
 
@@ -271,17 +358,31 @@ HTML
         </div>
 
         <div class="grid" id="cards-container">
-            <!-- Os cards serão gerados via JS -->
+            <!-- Cards gerados dinamicamente via JS -->
         </div>
 
+        <!-- Quiz de 10 Perguntas -->
         <div class="quiz-section">
-            <h2>📜 Teste de Conhecimento do Território</h2>
-            <p id="quiz-question" style="text-align: center; margin-bottom: 20px;">Carregando pergunta...</p>
-            <div id="quiz-options"></div>
-            <div id="quiz-feedback" class="quiz-feedback"></div>
+            <div class="quiz-header">
+                <h2>📜 Desafio Final do Território</h2>
+                <div class="quiz-progress" id="quiz-progress">Pergunta 1 de 10</div>
+            </div>
+
+            <div id="quiz-body">
+                <div class="quiz-question-box" id="quiz-question">Carregando pergunta...</div>
+                <div class="quiz-options" id="quiz-options"></div>
+                <div id="quiz-feedback" class="quiz-feedback"></div>
+            </div>
+
+            <div id="quiz-result-screen" class="quiz-result" style="display: none;">
+                <h3 id="result-title">Expedição Concluída!</h3>
+                <p id="result-text"></p>
+                <button class="btn-action" onclick="resetQuiz()">Reiniciar o Desafio</button>
+            </div>
         </div>
     </container>
 
+    <!-- Modal de Informações Detalhadas -->
     <div class="modal" id="info-modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal()">&times;</button>
@@ -293,10 +394,11 @@ HTML
     </div>
 
     <footer>
-        <p>Projeto Desenvolvido para o GitHub Pages | Território Histórico do Grão-Pará</p>
+        <p>Projeto Desenvolvido para o GitHub Pages | Território Histórico, Cultural e Ambiental do Grão-Pará</p>
     </footer>
 
     <script>
+        // Dados dos Cards Informativos
         const elementsData = [
             // História
             {
@@ -306,7 +408,7 @@ HTML
                 title: 'A Cabanagem (1835-1840)',
                 shortDesc: 'Uma das revoltas populares mais marcantes do Brasil Imperial.',
                 fullDesc: 'A Cabanagem foi uma revolta social e popular onde indígenas, quilombolas e ribeirinhos tomaram o poder no Grão-Pará. Lutavam contra a miséria, a opressão e o domínio das elites políticas locais.',
-                curiosity: 'Fato Histórico: Foi a única revolta popular no Brasil que chegou a tomar o governo da província.'
+                curiosity: 'Fato Histórico: Foi a única revolta popular no Brasil em que os rebeldes chegaram a assumir o governo provincial.'
             },
             {
                 id: 2,
@@ -314,17 +416,17 @@ HTML
                 tag: '📜 História',
                 title: 'Forte do Presépio (1616)',
                 shortDesc: 'Marco de fundação da cidade de Belém e início da colonização.',
-                fullDesc: 'Construído pelos portugueses para defender o território contra invasões inglesas e holandesas e garantir o controle sobre a foz do Rio Amazonas.',
-                curiosity: 'Localização: Deu origem ao que hoje é o centro histórico de Belém (Feliz Lusitânia).'
+                fullDesc: 'Construído pelos portugueses para defender o território contra invasões estrangeiras (inglesas e holandesas) e garantir o domínio da foz do Rio Amazonas.',
+                curiosity: 'Localização: Deu origem ao núcleo urbano hoje conhecido como Feliz Lusitânia.'
             },
             {
                 id: 3,
                 category: 'historia',
                 tag: '📜 História',
                 title: 'O Ciclo da Borracha',
-                shortDesc: 'Período de intensa riqueza econômica e urbanização no século XIX e XX.',
-                fullDesc: 'A extração do látex transformou a região na "Belle Époque Amazônica", financiando grandes obras arquitetônicas como o Theatro da Paz.',
-                curiosity: 'Impacto: Atraiu milhares de migrantes (especialmente nordestinos) para o trabalho nos seringais.'
+                shortDesc: 'Período de grande opulência econômica e urbanização no século XIX e XX.',
+                fullDesc: 'A extração do látex transformou a região na "Belle Époque Amazônica", financiando obras grandiosas como o Theatro da Paz e o Mercado Ver-o-Peso.',
+                curiosity: 'Impacto: Atraiu milhares de migrantes nordestinos para trabalhar na extração seringueira.'
             },
 
             // Cultura
@@ -334,26 +436,26 @@ HTML
                 tag: '🎭 Cultura',
                 title: 'Círio de Nazaré',
                 shortDesc: 'Uma das maiores manifestações religiosas e culturais do mundo.',
-                fullDesc: 'Reúne milhões de fiéis em Belém em procissão para homenagear Nossa Senhora de Nazaré. É reconhecido como Patrimônio Imaterial da Humanidade pela UNESCO.',
-                curiosity: 'Símbolo: A "Corda do Círio" e os brinquedos de miriti são marcas registradas do festejo.'
+                fullDesc: 'Reúne milhões de fiéis em Belém em procissão dedicada a Nossa Senhora de Nazaré. É Patrimônio Cultural Imaterial da Humanidade pela UNESCO.',
+                curiosity: 'Símbolo: A tradicional "Corda do Círio" e os brinquedos esculpidos em madeira de miriti.'
             },
             {
                 id: 5,
                 category: 'cultura',
                 tag: '🎭 Cultura',
-                title: 'Carimbó e Ritmos Paroaras',
-                shortDesc: 'Dança de roda e ritmo vibrante de matriz indígena e africana.',
-                fullDesc: 'Expressão cultural nascida do trabalho de pescadores e agricultores. Com instrumentos como o curimbó, banjo e maracás, celebra a vida na floresta e nos rios.',
-                curiosity: 'Tradição: As dançarinas usam saias longas e floridas com movimentos giratórios característicos.'
+                title: 'Carimbó',
+                shortDesc: 'Dança de roda e ritmo contagiante de matriz indígena, africana e portuguesa.',
+                fullDesc: 'Expressão tradicional com origem no trabalho de pescadores e agricultores. Utiliza tambores chamados curimbós, maracás e banjos para ditar o ritmo festivo.',
+                curiosity: 'Tradição: Mulheres vestem saias amplas e floridas com movimentos giratórios marcantes.'
             },
             {
                 id: 6,
                 category: 'cultura',
                 tag: '🎭 Cultura',
-                title: 'Culinária e Cerâmica Marajoara',
-                shortDesc: 'Sabores do Tucupi, Jambu, Açaí e a ancestral arte da Ilha de Marajó.',
-                fullDesc: 'A gastronomia do Grão-Pará é profundamente indígena, utilizando ingredientes como o tucupi, goma de tapioca e o jambu (que treme a boca). A cerâmica marajoara é um dos artesanatos mais antigos das Américas.',
-                curiosity: 'Patrimônio: O Tacacá servido nas tradicionais bancas das "tacacazeiras".'
+                title: 'Gastronomia & Cerâmica Marajoara',
+                shortDesc: 'Sabores do Tucupi e Jambu e a ancestralidade artística do Marajó.',
+                fullDesc: 'A culinária paraense é rica em raízes indígenas, destacando pratos com tucupi, jambu e açaí. A cerâmica marajoara é reconhecida mundialmente pelos seus complexos grafismos geométricos.',
+                curiosity: 'Patrimônio: O clássico Tacacá consumido quentinho nas bancas das tacacazeiras.'
             },
 
             // Meio Ambiente
@@ -361,52 +463,92 @@ HTML
                 id: 7,
                 category: 'ambiente',
                 tag: '🌿 Meio Ambiente',
-                title: 'Florestas de Igapó e Várzea',
-                shortDesc: 'Ecossistemas moldados pelo ritmo das águas dos rios amazônicos.',
-                fullDesc: 'A vegetação do Grão-Pará é dividida entre Mata de Terra Firme, Várzea (periodicamente inundada) e Igapó (permanentemente alagada pelos rios de águas pretas ou barrentas).',
-                curiosity: 'Biodiversidade: Abriga milhares de espécies adaptadas às cheias e vazantes.'
+                title: 'Igapós, Várzeas e Terra Firme',
+                shortDesc: 'Ecossistemas moldados pelo pulso do fluxo das águas amazônicas.',
+                fullDesc: 'O ecossistema divide-se em Matas de Terra Firme (não inundáveis), Várzeas (periodicamente alagadas) e Igapós (permanentemente cobertos pelas águas pretas ou barrentas dos rios).',
+                curiosity: 'Biodiversidade: Cada ambiente possui fauna e flora perfeitamente adaptadas ao nível dos rios.'
             },
             {
                 id: 8,
                 category: 'ambiente',
                 tag: '🌿 Meio Ambiente',
-                title: 'Vitória-Régia (Victoria amazonica)',
-                shortDesc: 'Símbolo emblemático da flora e das lendas da Amazônia.',
-                fullDesc: 'Uma das maiores plantas aquáticas do mundo, com folhas circulares que podem atingir mais de 2 metros de diâmetro e flutuar sobre as águas calmas das igarapés.',
-                curiosity: 'Mitolgia: Associada à lenda indígena da guerreira Naiá transformada em estrela das águas.'
+                title: 'Vitória-Régia',
+                shortDesc: 'Gigante aquática e símbolo da flora e do folclore amazônico.',
+                fullDesc: 'Planta aquática nativa cujas folhas circulares podem atingir até 2 metros de diâmetro e suportar vários quilos na superfície dos rios e lagos calmos.',
+                curiosity: 'Lenda: Associada à guerreira indígena Naiá, que apaixonou-se pela lua e virou a "Estrela das Águas".'
             },
             {
                 id: 9,
                 category: 'ambiente',
                 tag: '🌿 Meio Ambiente',
-                title: 'Bacia Hidrográfica & Fauna',
-                shortDesc: 'O santuário do Boto-Cor-De-Rosa, Peixe-Boi e Harpia.',
-                fullDesc: 'O território do Grão-Pará é banhado pelos grandes rios (Amazonas, Tapajós, Tocantins), sustentando a maior biodiversidade do planeta.',
-                curiosity: 'Lenda & Ciência: O boto-cor-de-rosa atua como elemento central no folclore regional.'
+                title: 'Arquipélago do Marajó & Rios',
+                shortDesc: 'A maior bacia hidrográfica do planeta e o Boto-Cor-De-Rosa.',
+                fullDesc: 'Compreende uma das regiões mais ricas em biodiversidade aquática do mundo, abrigando espécies emblemáticas como o Peixe-Boi, o Boto-Cor-De-Rosa e o Pirarucu.',
+                curiosity: 'Geografia: A Ilha de Marajó é a maior ilha fluviomarítima do planeta.'
             }
         ];
 
+        // Banco de 10 Perguntas do Quiz
         const quizQuestions = [
             {
-                q: "Qual revolta popular do século XIX ocorreu no território do Grão-Pará e chegou a tomar o poder regional?",
-                options: ["Guerra dos Farrapos", "Cabanagem", "Revolta dos Búzios", "Balaiada"],
+                q: "1. Qual importante revolta popular de indígenas, quilombolas e ribeirinhos tomou o poder no Grão-Pará em 1835?",
+                options: ["Guerra dos Farrapos", "Cabanagem", "Balaiada", "Revolta dos Búzios"],
                 correct: 1
             },
             {
-                q: "Qual planta aquática gigante é um dos maiores símbolos do ecossistema e do folclore da região?",
-                options: ["Mandacaru", "Vitória-Régia", "Samambaia-Açú", "Aguapé"],
+                q: "2. Em 1616, qual fortificação foi erguida pelos portugueses, dando origem à fundação da cidade de Belém?",
+                options: ["Forte dos Reis Magos", "Forte de São José", "Forte do Presépio (Forte do Castelo)", "Fortaleza de Santa Cruz"],
+                correct: 2
+            },
+            {
+                q: "3. O Círio de Nazaré, uma das maiores manifestações culturais e religiosas do mundo, é realizado em qual cidade?",
+                options: ["Santarém", "Belém", "Macapá", "Manaus"],
                 correct: 1
             },
             {
-                q: "Qual ritmo musical e dança tradicional de roda é Patrimônio Cultural Imaterial do Brasil originário do Pará?",
-                options: ["Samba de Roda", "Carimbó", "Frevo", "Maracatu"],
+                q: "4. Qual ritmo musical e dança tradicional de roda, marcada pelo som de tambores chamados curimbós, é símbolo do Pará?",
+                options: ["Carimbó", "Frevo", "Maracatu", "Samba de Roda"],
+                correct: 0
+            },
+            {
+                q: "5. Qual é a planta aquática gigante famosa por suas folhas circulares que podem atingir mais de 2 metros de diâmetro?",
+                options: ["Capim-Dourado", "Vitória-Régia", "Aguapé", "Sumaúma"],
                 correct: 1
+            },
+            {
+                q: "6. Qual ingrediente amarelo extraído da mandioca-brava é a base de pratos típicos como o Tacacá e o Pato no Tucupi?",
+                options: ["Açaí", "Jambu", "Tucupi", "Maniçoba"],
+                correct: 2
+            },
+            {
+                q: "7. Qual é a maior ilha fluviomarítima do mundo, famosa por sua biodiversidade e criação de búfalos?",
+                options: ["Ilha do Bananal", "Ilha de Florianópolis", "Ilha de Marajó", "Ilha Grande"],
+                correct: 2
+            },
+            {
+                q: "8. Durante a 'Belle Époque Amazônica' (século XIX/XX), qual matéria-prima impulsionou a economia do Grão-Pará?",
+                options: ["Ouro", "Látex (Borracha)", "Cacau", "Café"],
+                correct: 1
+            },
+            {
+                q: "9. A cerâmica famosa pelos seus grafismos geométricos pré-colombianos elaborada por antigos habitantes da foz do Amazonas é a:",
+                options: ["Cerâmica Marajoara", "Cerâmica Barroca", "Cerâmica Kadiwéu", "Cerâmica Tupi"],
+                correct: 0
+            },
+            {
+                q: "10. Qual animal mítico dos rios amazônicos é conhecido nas lendas folclóricas por se transformar em um homem nas festas?",
+                options: ["Peixe-Boi", "Pirarucu", "Boto-Cor-de-Rosa", "Jacaré-Açu"],
+                correct: 2
             }
         ];
 
+        // Variáveis de Controle
         let discovered = new Set();
         let currentQuizIndex = 0;
+        let quizScore = 0;
+        let isAnswering = false;
 
+        // Renderiza os Cards
         function renderCards(filter = 'todos') {
             const container = document.getElementById('cards-container');
             container.innerHTML = '';
@@ -441,10 +583,15 @@ HTML
             renderCards(cat);
         }
 
+        // Modal
         function openModal(item) {
             discovered.add(item.id);
             updateStats();
-            renderCards(document.querySelector('.btn-filter.active').textContent.toLowerCase().includes('história') ? 'historia' : 'todos');
+            
+            // Re-renderiza para atualizar o status do card
+            const currentFilterBtn = document.querySelector('.btn-filter.active');
+            const currentFilter = currentFilterBtn ? currentFilterBtn.getAttribute('onclick').match(/'([^']+)'/)[1] : 'todos';
+            renderCards(currentFilter);
 
             document.getElementById('modal-tag').textContent = item.tag;
             document.getElementById('modal-tag').className = `card-tag tag-${item.category}`;
@@ -470,9 +617,14 @@ HTML
             document.getElementById('rank-title').textContent = rank;
         }
 
-        function loadQuiz() {
+        // Lógica do Quiz de 10 Perguntas
+        function loadQuizQuestion() {
+            isAnswering = false;
             const q = quizQuestions[currentQuizIndex];
+
+            document.getElementById('quiz-progress').textContent = `Pergunta ${currentQuizIndex + 1} de ${quizQuestions.length}`;
             document.getElementById('quiz-question').textContent = q.q;
+            
             const optionsDiv = document.getElementById('quiz-options');
             optionsDiv.innerHTML = '';
             document.getElementById('quiz-feedback').textContent = '';
@@ -481,31 +633,76 @@ HTML
                 const btn = document.createElement('div');
                 btn.className = 'quiz-option';
                 btn.textContent = opt;
-                btn.onclick = () => checkAnswer(idx);
+                btn.onclick = () => selectAnswer(idx, btn);
                 optionsDiv.appendChild(btn);
             });
         }
 
-        function checkAnswer(selected) {
+        function selectAnswer(selectedIndex, element) {
+            if (isAnswering) return;
+            isAnswering = true;
+
             const q = quizQuestions[currentQuizIndex];
+            const allOptions = document.querySelectorAll('.quiz-option');
             const feedback = document.getElementById('quiz-feedback');
 
-            if (selected === q.correct) {
-                feedback.textContent = "✨ Correto! Você demonstra sabedoria sobre o Grão-Pará.";
+            // Desabilita novas seleções temporariamente
+            allOptions.forEach(opt => opt.classList.add('disabled'));
+
+            if (selectedIndex === q.correct) {
+                element.classList.add('correct');
+                feedback.textContent = "✨ Resposta Correta!";
                 feedback.style.color = "var(--accent-green)";
-                setTimeout(() => {
-                    currentQuizIndex = (currentQuizIndex + 1) % quizQuestions.length;
-                    loadQuiz();
-                }, 2000);
+                quizScore++;
             } else {
-                feedback.textContent = "❌ Tente novamente! Observe os detalhes do território.";
+                element.classList.add('wrong');
+                allOptions[q.correct].classList.add('correct');
+                feedback.textContent = "❌ Resposta Incorreta!";
                 feedback.style.color = "#e74c3c";
             }
+
+            setTimeout(() => {
+                currentQuizIndex++;
+                if (currentQuizIndex < quizQuestions.length) {
+                    loadQuizQuestion();
+                } else {
+                    showQuizResults();
+                }
+            }, 1800);
         }
 
-        // Inicialização
+        function showQuizResults() {
+            document.getElementById('quiz-body').style.display = 'none';
+            document.getElementById('quiz-progress').style.display = 'none';
+            
+            const resultScreen = document.getElementById('quiz-result-screen');
+            const resultText = document.getElementById('result-text');
+            resultScreen.style.display = 'block';
+
+            let resultMsg = "";
+            if (quizScore >= 9) {
+                resultMsg = `🏆 Sensacional! Você acertou ${quizScore} de 10 perguntas! Você é um verdadeiro especialista em Grão-Pará!`;
+            } else if (quizScore >= 6) {
+                resultMsg = `👏 Muito bem! Você acertou ${quizScore} de 10 perguntas. Demonstra um ótimo conhecimento do território.`;
+            } else {
+                resultMsg = `📚 Você acertou ${quizScore} de 10 perguntas. Que tal explorar os cards acima para conhecer mais sobre o Grão-Pará?`;
+            }
+
+            resultText.textContent = resultMsg;
+        }
+
+        function resetQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-body').style.display = 'block';
+            document.getElementById('quiz-progress').style.display = 'block';
+            document.getElementById('quiz-result-screen').style.display = 'none';
+            loadQuizQuestion();
+        }
+
+        // Inicialização do site
         renderCards();
-        loadQuiz();
+        loadQuizQuestion();
     </script>
 </body>
 </html>
